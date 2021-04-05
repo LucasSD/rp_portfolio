@@ -10,7 +10,7 @@ This is the repository for a website which showcases my projects and my blog.
 
 ## Technologies
 
-Python 3.9, Django
+Python 3.9, Django, Heroku
 
 ## Known Issues
 
@@ -19,10 +19,9 @@ Python 3.9, Django
 ## Project Status
 
 Still being developed. 
+
 ###### To do:
-- fix known y-axis label issue
-- add other stats such as mean alcohol content, worst rated beers/breweries/cities..., correlations between alcohol content and rating, and so on
-- deploy the project to the web
+- deploy the project to the web using Heroku
 
 
 
