@@ -1,4 +1,4 @@
-![](image url here)
+![](projects/static/img/projects2.png)
 # Introduction
 
 This is the repository for a website which showcases my projects and my blog. 
@@ -22,6 +22,8 @@ Still being developed.
 
 ###### To do:
 - deploy the project to the web using Heroku
+
+
 
 
 
