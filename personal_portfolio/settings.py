@@ -27,6 +27,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['lucasstonedrake.eu.pythonanywhere.com']
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE =True
+SECURE_SSL_REDIRECT = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Application definition
 
