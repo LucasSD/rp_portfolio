@@ -7,7 +7,7 @@ class Project(models.Model):
     technology = models.CharField(max_length=20)
     #image = models.ImageField()
     #image = models.FilePathField(path="rp_portfolio/static/img")
-    image = models.CharField()
+    image = models.CharField(max_length=100)
     repo = models.URLField()
 
     def __str__(self):
