@@ -10,7 +10,7 @@ This is the repository for a website which showcases my projects and my blog. Th
 
 ## Technologies
 
-Python 3.9, Django, Heroku
+Python 3.9, Django, Pythonanywhere
 
 ## Known Issues
 
@@ -21,7 +21,7 @@ Python 3.9, Django, Heroku
 Still being developed. 
 
 ###### To do:
-- deploy the project to the web using Heroku
+- create a test suite
 
 
 
