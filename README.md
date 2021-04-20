@@ -1,7 +1,7 @@
 ![](projects/static/img/projects2.png)
 # Introduction
 
-This is the repository for a website which showcases my projects and my blog. 
+This is the repository for a website which showcases my projects and my blog. The website is deployed via Pythonanywhere ans is available to view at https://lucasstonedrake.eu.pythonanywhere.com/  
  
 
 ## Quick Demo
@@ -10,7 +10,7 @@ This is the repository for a website which showcases my projects and my blog.
 
 ## Technologies
 
-Python 3.9, Django, Heroku
+Python 3.9, Django, Pythonanywhere
 
 ## Known Issues
 
@@ -21,7 +21,7 @@ Python 3.9, Django, Heroku
 Still being developed. 
 
 ###### To do:
-- deploy the project to the web using Heroku
+- create a test suite
 
 
 
