@@ -24,9 +24,9 @@ SECRET_KEY = 'fhdjskssksks574736y233gbrfn'
 import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['lucasstonedrake.eu.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -56,7 +56,9 @@ ROOT_URLCONF = 'personal_portfolio.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["rp_portfolio/personal_portfolio/templates/"],
+        'DIRS': ["rp_portfolio/personal_portfolio/templates/",
+        "personal_portfolio/templates/",
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

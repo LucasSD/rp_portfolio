@@ -1,23 +1,48 @@
 from django.test import TestCase
 
+from projects.models import Project
+
 class YourTestClass(TestCase):
     @classmethod
     def setUpTestData(cls):
         print("setUpTestData: Run once to set up non-modified data for all class methods.")
-        pass
+        Project.objects.create(
+            title='Web Scraper', 
+            description='This scrapes websites.',
+            summary='This scrapes...',
+            technology='scrapy',
+            image='img/JL.png',
+            repo='https://github.com/LucasSD/web-scraping'
+                                
+        )
 
     def setUp(self):
-        print("setUp: Run once for every test method to setup clean data.")
-        pass
+        '''Use if you need to set-up clean data ran once for eevry test'''
 
-    def test_false_is_false(self):
-        print("Method: test_false_is_false.")
-        self.assertFalse(False)
+    def test_title_max_length(self):
+        p = Project.objects.get(id=1)
+        max_length = p._meta.get_field('title').max_length
+        self.assertEqual(max_length, 100)
 
-    def test_false_is_true(self):
-        print("Method: test_false_is_true.")
-        self.assertTrue(False)
+    def test_summary_max_length(self):
+        p = Project.objects.get(id=1)
+        max_length = p._meta.get_field('summary').max_length
+        self.assertEqual(max_length, 100)
 
-    def test_one_plus_one_equals_two(self):
-        print("Method: test_one_plus_one_equals_two.")
-        self.assertEqual(1 + 1, 2)
+    def test_technology_max_length(self):
+        p = Project.objects.get(id=1)
+        max_length = p._meta.get_field('technology').max_length
+        self.assertEqual(max_length, 20)
+
+    def test_image_max_length(self):
+        p = Project.objects.get(id=1)
+        max_length = p._meta.get_field('image').max_length
+        self.assertEqual(max_length, 100)
+
+    def test_object_name_is_project_title(self):
+        p = Project.objects.get(id=1)
+        expected_object_name = f'{p.title}'
+        self.assertEqual(expected_object_name, str(p))
+      
+
+ 
