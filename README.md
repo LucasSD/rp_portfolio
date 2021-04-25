@@ -1,7 +1,7 @@
 ![](projects/static/img/projects2.png)
 # Introduction
 
-This is the repository for a website which showcases my projects and my blog. The website is deployed via Pythonanywhere ans is available to view at https://lucasstonedrake.eu.pythonanywhere.com/  
+This is the repository for a website which showcases my projects and my blog. The website is deployed via Pythonanywhere and is available to view at https://lucasstonedrake.eu.pythonanywhere.com/  
  
 
 ## Quick Demo
