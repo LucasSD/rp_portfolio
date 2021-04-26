@@ -13,6 +13,9 @@
     </small>
     <p>{{ post.body | linebreaks }}</p>
     <h2><a href={{post.link}}>{{post.link}}</a></h2>
+    <br>
+    <br>
+    <br>
     <h3>Leave a comment:</h3>
     <form action="/blog/{{ post.pk }}/" method="post">
         {% csrf_token %}
