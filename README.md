@@ -17,8 +17,8 @@ Still being developed.
 
 ###### To do:
 - finish the test suite
-- improve the blog entry capability
-- write some blogs!
+- add image capability to blog posts
+- write more blogs!
 - implement continuous integration
 - incorporate my craft beer statistics project into this project
 
