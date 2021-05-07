@@ -77,8 +77,10 @@ class ProjectDetailViewTest(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_view_url_accessible_by_name(self, pk):
-        response = self.client.get(reverse("project_detail"))
-        self.assertEqual(response.status_code, 200)
+        for i in Project.objects.all():
+            self.pk = i.id
+            response = self.client.get(reverse("project_detail"))
+            self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
         response = self.client.get("/2/")

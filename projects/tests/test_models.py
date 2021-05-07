@@ -19,7 +19,7 @@ class YourTestClass(TestCase):
         )
 
     def setUp(self):
-        """Use if you need to set-up clean data ran once for eevry test"""
+        """Use if you need to set-up clean data ran once for every test"""
 
     def test_title_max_length(self):
         p = Project.objects.get(id=1)
