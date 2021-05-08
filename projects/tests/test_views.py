@@ -45,13 +45,13 @@ class ProjectIndexViewTest(TestCase):
         response = self.client.get(reverse("home"))
         self.assertEqual(response.status_code, 200)
 
-        for i, p in enumerate(response.context["projects"]):
-            self.assertEqual("scrapy", p.technology)
-            self.assertEqual("img/JL.png", p.image)
-            self.assertEqual("https://github.com/LucasSD/web-scraping", p.repo)
-            self.assertEqual("This scrapes...", p.summary)
-            self.assertEqual("This scrapes websites.", p.description)
-            self.assertEqual(f"Web Scraper {i}", p.title)
+        for i, project in enumerate(response.context["projects"]):
+            self.assertEqual("scrapy", project.technology)
+            self.assertEqual("img/JL.png", project.image)
+            self.assertEqual("https://github.com/LucasSD/web-scraping", project.repo)
+            self.assertEqual("This scrapes...", project.summary)
+            self.assertEqual("This scrapes websites.", project.description)
+            self.assertEqual(f"Web Scraper {i}", project.title)
 
 
 class ProjectDetailViewTest(TestCase):
@@ -76,7 +76,7 @@ class ProjectDetailViewTest(TestCase):
             response = self.client.get(f"/{i.id}/")
             self.assertEqual(response.status_code, 200)
 
-    def test_view_url_accessible_by_name(self, pk):
+    def test_view_url_accessible_by_name(self, pk): # this currently produces an error
         for i in Project.objects.all():
             self.pk = i.id
             response = self.client.get(reverse("project_detail"))
@@ -87,3 +87,25 @@ class ProjectDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "project_detail.html")
         self.assertTemplateUsed(response, "base.html")
+
+    def test_displays_one_project(self):
+        for i in Project.objects.all():
+            response = self.client.get(f"/{i.id}/")
+            #response = self.client.get(reverse("project_detail"))
+            self.assertEqual(response.status_code, 200)
+
+            # need to make it an iterable to check the length
+            self.assertTrue(len([response.context["project"]]) == 1)
+
+    def test_context(self):
+        for project in Project.objects.all():
+            response = self.client.get(f"/{project.id}/")
+            #response = self.client.get(reverse("project_detail"))
+            self.assertEqual(response.status_code, 200)
+
+            self.assertEqual("scrapy", project.technology)
+            self.assertEqual("img/JL.png", project.image)
+            self.assertEqual("https://github.com/LucasSD/web-scraping", project.repo)
+            self.assertEqual("This scrapes...", project.summary)
+            self.assertEqual("This scrapes websites.", project.description)
+            self.assertEqual(f"Web Scraper {project.id - 1}", project.title)

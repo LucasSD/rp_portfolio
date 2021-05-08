@@ -15,7 +15,7 @@ class CategoryModelTest(TestCase):
         max_length = c._meta.get_field("name").max_length
         self.assertEqual(max_length, 21)
 
-    def test_object_name_is_category_name(self):
+    def test_object_name_is_category_name(self): # test __str__
         c = Category.objects.get(id=1)
         expected_object_name = f"{c.name}"
         self.assertEqual(expected_object_name, str(c))
@@ -38,10 +38,15 @@ class CommentModelTest(TestCase):
         max_length = c._meta.get_field("author").max_length
         self.assertEqual(max_length, 60)
 
-    def test_post_field(self):
+    def test_post_field(self): # test ForeignKey Field
         c = Comment.objects.get(id=1)
         expected_post = c.post
         self.assertEqual(str(expected_post), "test blog")
+
+    def test_object_name_is_comment_author(self): # test __str__
+        c = Comment.objects.get(id=1)
+        expected_object_name = f"{c.author}"
+        self.assertEqual(expected_object_name, str(c))
 
 class PostModelTest(TestCase):
     @classmethod
@@ -64,16 +69,13 @@ class PostModelTest(TestCase):
 
         #need to read https://www.revsys.com/tidbits/tips-using-djangos-manytomanyfield/ to get below to work
 
-    def test_categories_field(self):
+    def test_categories_field(self): # Test ManyToManyField - this currently causes an error
         p = Post.objects.get(id=1)
-        p.save()
-        cat = Category.objects.create(
-            name = "Test Category"
-        )
-        cat = Category.objects.get(id=1)
-        cat.save()
-        p.categories.set([cat])
-        p.save()
         expected_category = p.categories
         self.assertEqual(str(expected_category), "Test Category")
+
+    def test_object_name_is_post_title(self): # test __str__
+        c = Post.objects.get(id=1)
+        expected_object_name = f"{c.title}"
+        self.assertEqual(expected_object_name, str(c))
     
