@@ -21,6 +21,7 @@ Still being developed.
 - write more blogs!
 - implement continuous integration
 - incorporate my craft beer statistics project into this project
+- change timezones to GMT/BST
 
 
 
