@@ -5,7 +5,7 @@ This is the repository for a website which showcases my projects and my blog. Th
 
 ## Technologies
 
-Python 3.9, Django, Pythonanywhere
+Python 3.9, django, Pythonanywhere, coverage, black
 
 ## Known Issues
 
