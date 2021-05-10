@@ -76,10 +76,9 @@ class ProjectDetailViewTest(TestCase):
             response = self.client.get(f"/{i.id}/")
             self.assertEqual(response.status_code, 200)
 
-    def test_view_url_accessible_by_name(self, pk): # this currently produces an error
-        for i in Project.objects.all():
-            self.pk = i.id
-            response = self.client.get(reverse("project_detail"))
+    def test_view_url_accessible_by_name(self):
+        for project in Project.objects.all():
+            response = self.client.get(reverse("project_detail", kwargs={'pk':project.id}))
             self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
@@ -89,9 +88,8 @@ class ProjectDetailViewTest(TestCase):
         self.assertTemplateUsed(response, "base.html")
 
     def test_displays_one_project(self):
-        for i in Project.objects.all():
-            response = self.client.get(f"/{i.id}/")
-            #response = self.client.get(reverse("project_detail"))
+        for project in Project.objects.all():
+            response = self.client.get(reverse("project_detail", kwargs={'pk':project.id}))
             self.assertEqual(response.status_code, 200)
 
             # need to make it an iterable to check the length
@@ -99,8 +97,7 @@ class ProjectDetailViewTest(TestCase):
 
     def test_context(self):
         for project in Project.objects.all():
-            response = self.client.get(f"/{project.id}/")
-            #response = self.client.get(reverse("project_detail"))
+            response = self.client.get(reverse("project_detail", kwargs={'pk':project.id}))
             self.assertEqual(response.status_code, 200)
 
             self.assertEqual("scrapy", project.technology)

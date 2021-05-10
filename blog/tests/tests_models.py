@@ -67,12 +67,13 @@ class PostModelTest(TestCase):
         max_length = p._meta.get_field("title").max_length
         self.assertEqual(max_length, 255)
 
-        #need to read https://www.revsys.com/tidbits/tips-using-djangos-manytomanyfield/ to get below to work
-
     def test_categories_field(self): # Test ManyToManyField - this currently causes an error
         p = Post.objects.get(id=1)
+        cat = Category.objects.get(id=1)
+        p.categories.set("posts")
+        p.save()
         expected_category = p.categories
-        self.assertEqual(str(expected_category), "Test Category")
+        self.assertEqual(expected_category, "Test Category")
 
     def test_object_name_is_post_title(self): # test __str__
         c = Post.objects.get(id=1)

@@ -1,6 +1,7 @@
 import time
 from datetime import datetime
 
+from blog.forms import CommentForm
 from django.test import TestCase
 from django.urls import reverse
 
@@ -18,7 +19,7 @@ class BlogIndexViewTest(TestCase):
                 body="This is the body...",
                 link="https://cscircles.cemc.uwaterloo.ca/",
             )
-            # this delay ensures the context created in the relvant view is not ordered randomly
+            # this delay ensures the context created in the relevant view is not ordered randomly
             time.sleep(0.0001) 
 
     def test_view_url_exists_at_desired_location(self):
@@ -59,19 +60,23 @@ class BlogCategoryViewTest(TestCase):
     @classmethod
     # Need a set-up which can handle the ManyToMany field Post.categories
     def setUpTestData(cls): 
-        pass
+        cat = Category.objects.create(
+            name = "Test-Category"
+        )
 
     def test_view_url_exists_at_desired_location(self):
-        response = self.client.get("/blog/<category>/")
+        cat = Category.objects.get(id=1)
+        response = self.client.get(f"/blog/{cat.name}/")
         self.assertEqual(response.status_code, 200)
 
-    def test_view_url_accessible_by_name(self): # this currently produces an error
-        response = self.client.get(reverse("blog_category"))
+    def test_view_url_accessible_by_name(self):
+        cat = Category.objects.get(id=1)
+        response = self.client.get(reverse("blog_category", kwargs={"category":cat}))
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        response = self.client.get("/blog/<category>/")
-        #response = self.client.get(reverse("blog_category"))
+        cat = Category.objects.get(id=1)
+        response = self.client.get(reverse("blog_category", kwargs={"category":cat}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "blog_category.html")
         self.assertTemplateUsed(response, "base.html")
@@ -90,7 +95,8 @@ class BlogDetailViewTest(TestCase):
             # this delay ensures the context created in the relvant view is not ordered randomly
             time.sleep(0.0001) 
 
-        
+            form = CommentForm()
+
         for comment_author in authors:
             Comment.objects.create(
             author=comment_author,
@@ -100,27 +106,25 @@ class BlogDetailViewTest(TestCase):
 
     def test_view_url_exists_at_desired_location(self):
         # for all instances in the test database
-        for i in Post.objects.all():
-            response = self.client.get(f"/blog/{i.id}/")
-        #response = self.client.get("/blog/<int:pk>/") - what exactly is happening with this test?
+        for blog_post in Post.objects.all():
+            response = self.client.get(f"/blog/{blog_post.id}/")
         self.assertEqual(response.status_code, 200)
 
-    def test_view_url_accessible_by_name(self): # this causes an error currently
-        response = self.client.get(reverse("blog_detail"))
+    def test_view_url_accessible_by_name(self): 
+        for blog_post in Post.objects.all():
+            response = self.client.get(reverse("blog_detail", kwargs={"pk":blog_post.id}))
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
         for blog_post in Post.objects.all():
-            response = self.client.get(f"/blog/{blog_post.id}/")
-        #response = self.client.get(reverse("blog_category"))
+            response = self.client.get(reverse("blog_detail", kwargs={"pk":blog_post.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "blog_detail.html")
         self.assertTemplateUsed(response, "base.html")
 
     def test_displays_one_blog_post(self):
         for blog_post in Post.objects.all():
-            response = self.client.get(f"/blog/{blog_post.id}/")
-            #response = self.client.get(reverse("blog_detail"))
+            response = self.client.get(reverse("blog_detail", kwargs={"pk":blog_post.id}))
             self.assertEqual(response.status_code, 200)
 
             # need to make it an iterable to check the length
@@ -128,8 +132,7 @@ class BlogDetailViewTest(TestCase):
 
     def test_post_context(self):
         for blog_post in Post.objects.all():
-            response = self.client.get(f"/blog/{blog_post.id}/")
-            #response = self.client.get(reverse("blog_detail"))
+            response = self.client.get(reverse("blog_detail", kwargs={"pk":blog_post.id}))
             self.assertEqual(response.status_code, 200)
 
             blog_post = response.context["post"]
@@ -141,29 +144,57 @@ class BlogDetailViewTest(TestCase):
 
     def test_displays_all_comments(self):
         blog_post = Post.objects.get(id=1) # this blog post has three comments
-        response = self.client.get(f"/blog/{blog_post.id}/")
-        #response = self.client.get(reverse("blog_detail"))
+        response = self.client.get(reverse("blog_detail", kwargs={"pk":blog_post.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.context["comments"]) == 3)
 
     def test_displays_no_comments(self):
         blog_post = Post.objects.get(id=2) # this blog post has no comments
-        response = self.client.get(f"/blog/{blog_post.id}/")
-        #response = self.client.get(reverse("blog_detail"))
+        response = self.client.get(reverse("blog_detail", kwargs={"pk":blog_post.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.context["comments"]) == 0)
 
     def test_comments_context(self):
-        response = self.client.get("/blog/1/")
+        response = self.client.get(reverse("blog_detail", kwargs={"pk":1}))
         self.assertEqual(response.status_code, 200)
-        #response = self.client.get(reverse("blog_detail"))
         for comment, author in zip(response.context["comments"], authors):
             self.assertEqual(author, comment.author)
             self.assertEqual("blah blah", comment.body)
             self.assertIsInstance(comment.created_on, datetime)
             self.assertEqual("Blog Post 0", str(comment.post))
 
+    def test_form_context(self):
+         for blog_post in Post.objects.all():
+            response = self.client.get(reverse("blog_detail", kwargs={"pk":blog_post.id}))
+            self.assertEqual(response.status_code, 200)
 
+            form = response.context["form"]
+            self.assertIn('form', response.context)
+            self.assertEqual({}, form.initial)
+            self.assertEqual(None, form["author"].value())
+            self.assertEqual(None, form["body"].value())
+
+    def test_redirects_to_same_page_when_comment_submitted(self):
+        for blog_post in Post.objects.all():
+            response = self.client.post(reverse('blog_detail', kwargs={'pk':blog_post.id}))
+            request = self.client.get(reverse('blog_detail', kwargs={'pk':blog_post.id}))
+            self.assertURLEqual(response, request)
     
-
+    def test_comment_form(self):
+        blog_post = Post.objects.get(id=3)
+        form_entry = {
+            "author": "Formy",
+            "body": "Test this comment form",
+            "post": blog_post,
+        }
+        
+        response = self.client.post(reverse('blog_detail', kwargs={'pk':3}), data=form_entry)
+        comment = Comment.objects.get(id=4)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Comment.objects.count(), 4)
+        self.assertEqual("Formy", comment.author)
+        self.assertEqual("Test this comment form", comment.body)
+        self.assertIsInstance(comment.created_on, datetime)
+        self.assertEqual("Blog Post 2", str(comment.post))
+    
 
