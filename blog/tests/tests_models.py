@@ -65,14 +65,16 @@ class PostModelTest(TestCase):
         max_length = p._meta.get_field("title").max_length
         self.assertEqual(max_length, 255)
 
-    def test_categories_field(
-        self,
-    ):  # Test ManyToManyField - this currently causes an error
-        p = Post.objects.get(id=1)
+    def test_categories_field(self):
         cat = Category.objects.get(id=1)
-        p.categories.set("posts")
+        cat.save()
+
+        p = Post.objects.get(id=1)
+        p.categories.add(cat)
         p.save()
-        expected_category = p.categories
+        expected_category = str(
+            p.categories.all()[0]
+        )  # queryset is a list of length one
         self.assertEqual(expected_category, "Test Category")
 
     def test_object_name_is_post_title(self):  # test __str__
