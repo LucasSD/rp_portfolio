@@ -1,7 +1,7 @@
 ![](projects/static/img/projects2.png)
 # Introduction
 
-This is the repository for a website which showcases my projects and my blog. The website is deployed via Pythonanywhere and is available to view at https://lucasstonedrake.eu.pythonanywhere.com/  
+This is the repository for a website which showcases my projects and my blog. The website is deployed via Pythonanywhere and is available to view at https://lucasstonedrake.eu.pythonanywhere.com/. The test suite gives 100% coverage. 
 
 ## Technologies
 
@@ -17,7 +17,6 @@ Python 3.9, django, Pythonanywhere, coverage, black
 Still being developed. 
 
 ###### To do:
-- maintain the test suite as the website gets added to
 - add image capability to blog posts
 - write more blogs!
 - implement continuous integration
