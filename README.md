@@ -17,7 +17,7 @@ Python 3.9, django, Pythonanywhere, coverage, black
 Still being developed. 
 
 ###### To do:
-- maintain and improve the test suite
+- maintain the test suite as the website gets added to
 - add image capability to blog posts
 - write more blogs!
 - implement continuous integration
