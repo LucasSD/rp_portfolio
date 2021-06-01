@@ -34,7 +34,7 @@ class YourTestClass(TestCase):
     def test_technology_max_length(self):
         p = Project.objects.get(id=1)
         max_length = p._meta.get_field("technology").max_length
-        self.assertEqual(max_length, 20)
+        self.assertEqual(max_length, 100)
 
     def test_image_max_length(self):
         p = Project.objects.get(id=1)
