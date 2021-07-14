@@ -6,9 +6,6 @@ from projects.models import Project
 class YourTestClass(TestCase):
     @classmethod
     def setUpTestData(cls):
-        print(
-            "setUpTestData: Run once to set up non-modified data for all class methods."
-        )
         Project.objects.create(
             title="Web Scraper",
             description="This scrapes websites.",
@@ -17,9 +14,6 @@ class YourTestClass(TestCase):
             image="img/JL.png",
             repo="https://github.com/LucasSD/web-scraping",
         )
-
-    def setUp(self):
-        """Use if you need to set-up clean data ran once for every test"""
 
     def test_title_max_length(self):
         p = Project.objects.get(id=1)

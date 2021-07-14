@@ -3,10 +3,10 @@ from projects.models import Project
 
 
 def project_index(request):
-    projects = Project.objects.all()
+    projects = Project.objects.all().order_by("order")
     context = {
         "projects": projects
-    }  # always need a context dict when retrieving from a db
+    }  
     return render(request, "project_index.html", context)
 
 

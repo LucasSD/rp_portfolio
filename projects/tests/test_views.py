@@ -18,6 +18,7 @@ class ProjectIndexViewTest(TestCase):
                 technology="scrapy",
                 image="img/JL.png",
                 repo="https://github.com/LucasSD/web-scraping",
+                order=p
             )
 
     def test_view_url_exists_at_desired_location(self):
@@ -52,6 +53,24 @@ class ProjectIndexViewTest(TestCase):
             self.assertEqual("This scrapes...", project.summary)
             self.assertEqual("This scrapes websites.", project.description)
             self.assertEqual(f"Web Scraper {i}", project.title)
+
+    def test_project_order(self):
+        Project.objects.create(
+                title=f"First Project",
+                description="This scrapes websites.",
+                summary="This scrapes...",
+                technology="scrapy",
+                image="img/JL.png",
+                repo="https://github.com/LucasSD/web-scraping",
+                order=-4
+            )
+        response = self.client.get(reverse("home"))
+        self.assertEqual(response.status_code, 200)
+        first_project = response.context["projects"][0]
+        third_project = response.context["projects"][2]
+        self.assertEqual("First Project", first_project.title)
+        self.assertEqual("Web Scraper 1", third_project.title)
+        
 
 
 class ProjectDetailViewTest(TestCase):
@@ -112,3 +131,4 @@ class ProjectDetailViewTest(TestCase):
             self.assertEqual("This scrapes...", project.summary)
             self.assertEqual("This scrapes websites.", project.description)
             self.assertEqual(f"Web Scraper {project.id - 1}", project.title)
+
