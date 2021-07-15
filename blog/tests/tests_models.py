@@ -1,14 +1,12 @@
 from datetime import datetime
 
+from blog.models import Category, Comment, Post
 from django.test import TestCase
-
-from blog.models import Post, Comment, Category
 
 
 class CategoryModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        # Set up non-modified objects used by all test methods
         Category.objects.create(name="Resources")
 
     def test_name_max_length(self):
@@ -25,7 +23,6 @@ class CategoryModelTest(TestCase):
 class CommentModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        # Set up non-modified objects used by all test methods
         p = Post.objects.create(title="test blog")
 
         Comment.objects.create(
@@ -38,7 +35,7 @@ class CommentModelTest(TestCase):
         max_length = c._meta.get_field("author").max_length
         self.assertEqual(max_length, 60)
 
-    def test_post_field(self):  # test ForeignKey Field
+    def test_post_field(self):
         c = Comment.objects.get(id=1)
         expected_post = c.post
         self.assertEqual(str(expected_post), "test blog")
@@ -52,8 +49,6 @@ class CommentModelTest(TestCase):
 class PostModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        # Set up non-modified objects used by all test methods
-
         cat = Category.objects.create(name="Test Category")
 
         p = Post.objects.create(

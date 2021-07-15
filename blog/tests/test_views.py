@@ -2,10 +2,9 @@ import time
 from datetime import datetime
 
 from blog.forms import CommentForm
+from blog.models import Category, Comment, Post
 from django.test import TestCase
 from django.urls import reverse
-
-from blog.models import Post, Category, Comment
 
 authors = ["Lucas", "James", "Haamiyah"]
 
@@ -21,7 +20,7 @@ class BlogIndexViewTest(TestCase):
                 body="This is the body...",
                 link="https://cscircles.cemc.uwaterloo.ca/",
             )
-            # this delay ensures the context created in the relevant view is not ordered randomly
+            # this delay ensures the db is not ordered randomly
             time.sleep(0.0001)
 
     def test_view_url_exists_at_desired_location(self):
@@ -42,14 +41,14 @@ class BlogIndexViewTest(TestCase):
         response = self.client.get(reverse("blog_index"))
         self.assertEqual(response.status_code, 200)
 
-        # check the number of blog posts is correct
+        # check the number of blog posts
         self.assertTrue(len(response.context["posts"]) == 5)
 
     def test_context(self):
         response = self.client.get(reverse("blog_index"))
         self.assertEqual(response.status_code, 200)
 
-        # loop in order of "created_on," but in ascending
+        # loop in order of "created_on"
         # TODO add test for ManyToMany field in context
         for i, post in enumerate(response.context["posts"].order_by("created_on")):
             self.assertEqual(f"Blog Post {i}", post.title)
@@ -94,7 +93,7 @@ class BlogDetailViewTest(TestCase):
                 body="This is the body...",
                 link="https://cscircles.cemc.uwaterloo.ca/",
             )
-            # this delay ensures the context created in the relvant view is not ordered randomly
+            # this delay ensures the db is not ordered randomly
             time.sleep(0.0001)
 
             form = CommentForm()
@@ -107,7 +106,6 @@ class BlogDetailViewTest(TestCase):
             )
 
     def test_view_url_exists_at_desired_location(self):
-        # for all instances in the test database
         for blog_post in Post.objects.all():
             response = self.client.get(f"/blog/{blog_post.id}/")
         self.assertEqual(response.status_code, 200)
@@ -135,7 +133,7 @@ class BlogDetailViewTest(TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
-            # need to make it an iterable to check the length
+            # need to make post context an iterable to check the length
             self.assertTrue(len([response.context["post"]]) == 1)
 
     def test_post_context(self):
