@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from personal_portfolio.views import CvView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("projects.urls")),
     path("blog/", include("blog.urls")),
+    path('cv/', CvView.as_view(), name='cv'),
 ]
+
