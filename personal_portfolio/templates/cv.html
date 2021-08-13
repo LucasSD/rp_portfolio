@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 {% block page_content %}
-<h1>CV Coming Soon...</h1>
+<h1>My CV</h1>
 
 
 
+<a href="{% static '/cv/lucascv.pdf' %}" class="btn" target="_blank">
+        View</a>
+
+<a href="{% static '/cv/lucascv.pdf' %}" download class="btn">
+        Download</a>
 
 {% endblock %}
