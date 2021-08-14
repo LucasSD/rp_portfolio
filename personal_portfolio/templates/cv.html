@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 {% block page_content %}
+<div class="col-md-8 offset-md-2">
 <h1>My CV</h1>
+        <hr>
 
+<a href="{% static '/cv/lucascv.pdf' %}" class = "btn" target="_blank">View</a>
 
+<a href="{% static '/cv/lucascv.pdf' %}" download class="btn">Download</a>
 
-<a href="{% static '/cv/lucascv.pdf' %}" class="btn" target="_blank">
-        View</a>
-
-<a href="{% static '/cv/lucascv.pdf' %}" download class="btn">
-        Download</a>
+</div>
 
 {% endblock %}
