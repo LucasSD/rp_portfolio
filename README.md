@@ -14,7 +14,7 @@ Python 3.9, Django 3.1.7, PythonAnywhere, Coverage 5.5, Black
 
 ## Project Status
 
-Still being developed. 
+On hold. 
 
 ###### To do:
 - add image capability to blog posts
